@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body {
+  background-color: #FAFAFA;
+  font-family: 'Raleway', sans-serif;
+}
+
+.App {}
+
+.headerRow {
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+.getStartedRow {
+  text-align: center;
+}
