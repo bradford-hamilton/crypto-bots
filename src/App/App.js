@@ -25,12 +25,8 @@ class App extends Component {
   componentWillMount() {
     // Get network provider and web3 instance.
     getWeb3
-      .then((results) => {
-        this.setState({ web3: results.web3 });
-      })
-      .catch(() => {
-        console.log('Error finding web3.');
-      });
+      .then(results => this.setState({ web3: results.web3 }))
+      .catch(() => console.log('Error finding web3.'));
   }
 
   render() {
