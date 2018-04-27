@@ -49,6 +49,8 @@
   },
   "dependencies": {
     "dotenv": "^2.0.0",
+    "ipfs-api": "^20.0.1",
+    "prop-types": "^15.6.1",
     "react": "^15.4.2",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^15.4.2",
