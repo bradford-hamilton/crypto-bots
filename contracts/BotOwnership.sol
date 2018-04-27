@@ -1,10 +1,11 @@
 pragma solidity ^0.4.23;
 
 import "./BotBase.sol";
+import "./Marketplace.sol";
 import "./ERC721Basic.sol";
 
 /// @title Manages ownership, ERC-721 (somwhat) compliant.
-contract BotOwnership is BotBase, ERC721Basic {
+contract BotOwnership is Marketplace, BotBase, ERC721Basic {
   /// @notice Name and symbol of the non fungible token, as defined in ERC721.
   string public constant name = "CryptoBots";
   string public constant symbol = "CB";
