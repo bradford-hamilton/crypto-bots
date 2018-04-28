@@ -1,11 +1,10 @@
 pragma solidity ^0.4.23;
 
 import "./BotBase.sol";
-import "./Marketplace.sol";
 import "./ERC721Basic.sol";
 
 /// @title Manages ownership, ERC-721 (somwhat) compliant.
-contract BotOwnership is Marketplace, BotBase, ERC721Basic {
+contract BotOwnership is BotBase, ERC721Basic {
   /// @notice Name and symbol of the non fungible token, as defined in ERC721.
   string public constant name = "CryptoBots";
   string public constant symbol = "CB";
@@ -135,8 +134,8 @@ contract BotOwnership is Marketplace, BotBase, ERC721Basic {
 
   /// @notice Returns a Bots dna and birthtime. Cannot return structs at this point
   ///  so it's returning multiple values off the bot struct.
-  /// @param _botIndex The index of the bot in question.
-  function getTokenByIndex(uint256 _botIndex) public view returns (uint256, uint64) {
-    return (bots[_botIndex].dna, bots[_botIndex].birthTime);
+  /// @param _tokenId The index of the bot in question.
+  function getTokenByIndex(uint256 _tokenId) public view returns (uint256, uint64) {
+    return (bots[_tokenId].dna, bots[_tokenId].birthTime);
   }
 }
