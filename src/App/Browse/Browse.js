@@ -31,7 +31,7 @@ class Browse extends Component {
           <Row className="headerRow">
             <Col xs={12} md={6} mdOffset={3}>
               <PageHeader>
-                Check out all the new bots!
+                Bot Marketplace
               </PageHeader>
             </Col>
           </Row>
