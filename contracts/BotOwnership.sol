@@ -135,7 +135,13 @@ contract BotOwnership is BotBase, ERC721Basic {
   /// @notice Returns a Bots dna and birthtime. Cannot return structs at this point
   ///  so it's returning multiple values off the bot struct.
   /// @param _tokenId The index of the bot in question.
-  function getTokenByIndex(uint256 _tokenId) public view returns (uint256, uint64) {
+  function getTokenByIndex(uint256 _tokenId) public view returns(uint256, uint64) {
     return (bots[_tokenId].dna, bots[_tokenId].birthTime);
+  }
+
+  /// @notice Returns owner's address based on bot index.
+  /// @param _tokenId The index of the bot in question.
+  function getOwnerByIndex(uint256 _tokenId) public view returns(address) {
+    return botIndexToOwner[_tokenId];
   }
 }
