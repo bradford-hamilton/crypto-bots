@@ -5,15 +5,15 @@ const NavBar = () => (
   <Navbar inverse>
     <Navbar.Header>
       <Navbar.Brand>
-        <a href="/">Crypto Cars</a>
+        <a href="/">Crypto Bots</a>
       </Navbar.Brand>
     </Navbar.Header>
     <Nav>
-      <NavItem eventKey={1} href="#">
-        Link
+      <NavItem eventKey={1} href="/browse">
+        Browse Bots
       </NavItem>
-      <NavItem eventKey={2} href="#">
-        Link
+      <NavItem eventKey={1} href="/my-bots">
+        My Bots
       </NavItem>
     </Nav>
   </Navbar>
