@@ -5,8 +5,10 @@ import {
   Col,
   PageHeader,
   Image,
+  Button,
 } from 'react-bootstrap';
 import { withRouter } from 'react-router';
+import contract from 'truffle-contract';
 import getWeb3 from '../../utils/getWeb3';
 import NavBar from '../NavBar/NavBar';
 import BotCore from '../../../build/contracts/BotCore.json';
@@ -15,7 +17,7 @@ import './Browse.css';
 class Browse extends Component {
   constructor(props) {
     super(props);
-    this.state = { web3: null, botsForSale: [] };
+    this.state = { web3: null, botsForSale: [], botCoreInstance: null };
   }
 
   componentWillMount() {
@@ -28,15 +30,15 @@ class Browse extends Component {
   }
 
   async listBots() {
-    const contract = require('truffle-contract');
     const botCore = contract(BotCore);
-
     botCore.setProvider(this.state.web3.currentProvider);
-
     const botCoreInstance = await botCore.deployed();
-    const botIds = await botCoreInstance.listBotIds();
-    const botPrices = await botCoreInstance.listBotPrices();
-    const botOwners = await botCoreInstance.listBotOwners();
+
+    this.setState({ botCoreInstance });
+
+    const botIds = await this.state.botCoreInstance.listBotIds();
+    const botPrices = await this.state.botCoreInstance.listBotPrices();
+    const botOwners = await this.state.botCoreInstance.listBotOwners();
     const botsForSale = botIds.map((botId, i) => ({
       id: botId.toNumber(),
       price: this.state.web3.fromWei(botPrices[i].toNumber(), 'ether'),
@@ -46,6 +48,23 @@ class Browse extends Component {
     this.setState({ botsForSale });
   }
 
+  async buyBotHandler(tokenId, ownerAddress, price) {
+    const accounts = await this.state.web3.eth.accounts;
+
+    console.log('tokenId', tokenId);
+    console.log('ownerAddress', ownerAddress);
+    console.log('price', price);
+    console.log(this.state.botCoreInstance);
+    console.log(this.state.web3.toWei(price, 'ether'));
+
+    this.state.botCoreInstance
+      .buyBotFromMarketplace(tokenId, ownerAddress, {
+        from: accounts[0],
+        to: this.state.botCoreInstance.address,
+        value: this.state.web3.toWei(price, 'ether'),
+        gas: 1500000,
+      });
+  }
 
   render() {
     if (!this.state.web3) return <h1>Loading...</h1>;
@@ -67,8 +86,18 @@ class Browse extends Component {
                 <div className="bot-card">
                   <Image src={`https://robohash.org/${bot.id}`} rounded />
                   <p className="bot-id">Bot #{bot.id}</p>
-                  <p className="price">Price: {bot.price} ether</p>
+                  <p className="price">Current Price: {bot.price} ether</p>
                   <p className="address">Owner Address: {bot.owner}</p>
+                  <div className="buy-button">
+                    <Button
+                      onClick={() => this.buyBotHandler(bot.id, bot.owner, bot.price)}
+                      bsStyle="success"
+                      bsSize="large"
+                      block
+                    >
+                      Buy for {bot.price} Ether
+                    </Button>
+                  </div>
                 </div>
               </Col>
             ))}
