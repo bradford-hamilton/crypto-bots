@@ -17,7 +17,12 @@ import './Browse.css';
 class Browse extends Component {
   constructor(props) {
     super(props);
-    this.state = { web3: null, botsForSale: [], botCoreInstance: null };
+    this.state = {
+      web3: null,
+      botsForSale: [],
+      botCoreInstance: null,
+      accounts: []
+    };
   }
 
   componentWillMount() {
@@ -33,8 +38,9 @@ class Browse extends Component {
     const botCore = contract(BotCore);
     botCore.setProvider(this.state.web3.currentProvider);
     const botCoreInstance = await botCore.deployed();
+    const accounts = await this.state.web3.eth.accounts;
 
-    this.setState({ botCoreInstance });
+    this.setState({ botCoreInstance, accounts });
 
     const botIds = await this.state.botCoreInstance.listBotIds();
     const botPrices = await this.state.botCoreInstance.listBotPrices();
@@ -49,17 +55,9 @@ class Browse extends Component {
   }
 
   async buyBotHandler(tokenId, ownerAddress, price) {
-    const accounts = await this.state.web3.eth.accounts;
-
-    console.log('tokenId', tokenId);
-    console.log('ownerAddress', ownerAddress);
-    console.log('price', price);
-    console.log(this.state.botCoreInstance);
-    console.log(this.state.web3.toWei(price, 'ether'));
-
     this.state.botCoreInstance
       .buyBotFromMarketplace(tokenId, ownerAddress, {
-        from: accounts[0],
+        from: this.state.accounts[0],
         to: this.state.botCoreInstance.address,
         value: this.state.web3.toWei(price, 'ether'),
         gas: 1500000,
@@ -68,7 +66,7 @@ class Browse extends Component {
 
   render() {
     if (!this.state.web3) return <h1>Loading...</h1>;
-
+    console.log(this.state.accounts);
     return (
       <div className="browse">
         <NavBar />
@@ -81,26 +79,29 @@ class Browse extends Component {
             </Col>
           </Row>
           <Row className="bot-row">
-            {this.state.botsForSale.map(bot => (
-              <Col xs={12} md={4} key={bot.id} className="bot-card-wrapper">
-                <div className="bot-card">
-                  <Image src={`https://robohash.org/${bot.id}`} rounded />
-                  <p className="bot-id">Bot #{bot.id}</p>
-                  <p className="price">Current Price: {bot.price} ether</p>
-                  <p className="address">Owner Address: {bot.owner}</p>
-                  <div className="buy-button">
-                    <Button
-                      onClick={() => this.buyBotHandler(bot.id, bot.owner, bot.price)}
-                      bsStyle="success"
-                      bsSize="large"
-                      block
-                    >
-                      Buy for {bot.price} Ether
-                    </Button>
-                  </div>
-                </div>
-              </Col>
-            ))}
+            {this.state.botsForSale.map(bot => {
+              if (this.state.accounts[0] === bot.owner) return null;
+              return (
+                <Col xs={12} md={4} key={bot.id} className="bot-card-wrapper">
+                  <div className="bot-card">
+                    <Image src={`https://robohash.org/${bot.id}`} rounded />
+                    <p className="bot-id">Bot #{bot.id}</p>
+                    <p className="price">Current Price: {bot.price} ether</p>
+                    <p className="address">Owner Address: {bot.owner}</p>
+                    <div className="buy-button">
+                      <Button
+                        onClick={() => this.buyBotHandler(bot.id, bot.owner, bot.price)}
+                        bsStyle="success"
+                        bsSize="large"
+                        block
+                        >
+                          Buy for {bot.price} Ether
+                        </Button>
+                      </div>
+                    </div>
+                  </Col>
+                );
+            })}
           </Row>
         </Grid>
       </div>

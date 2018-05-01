@@ -13,11 +13,11 @@ contract BotCore is Marketplace {
     uint256 botFiveId = _createBot(uint256(keccak256("Does anyone know what was in that danish?")), msg.sender);
 
     // put those 5 bots on the marketplace
-    addBotToMarketPlace(botOneId, .01 ether, this);
-    addBotToMarketPlace(botTwoId, .01 ether, this);
-    addBotToMarketPlace(botThreeId, .01 ether, this);
-    addBotToMarketPlace(botFourId, .01 ether, this);
-    addBotToMarketPlace(botFiveId, .01 ether, this);
+    addBotToMarketPlace(botOneId, .01 ether, msg.sender);
+    addBotToMarketPlace(botTwoId, .01 ether, msg.sender);
+    addBotToMarketPlace(botThreeId, .01 ether, msg.sender);
+    addBotToMarketPlace(botFourId, .01 ether, msg.sender);
+    addBotToMarketPlace(botFiveId, .01 ether, msg.sender);
   }
 
   function() external payable {}
