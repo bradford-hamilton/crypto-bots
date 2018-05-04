@@ -16,7 +16,7 @@ contract Marketplace is BotOwnership {
   /// @param _price Price you're selling the bot for
   /// @param _owner Address of the current owner of the bot
   function addBotToMarketPlace(uint256 _tokenId, uint256 _price, address _owner) public payable {
-    approve(msg.sender, _tokenId);
+    approve(this, _tokenId);
     tokenIdToPrice[_tokenId] = _price;
 
     botIdsForSale.push(_tokenId);

@@ -81,7 +81,7 @@ contract BotOwnership is BotBase, ERC721Basic {
     require(_to != address(0));
 
     // Check for approval and valid ownership
-    require(_approvedFor(msg.sender, _tokenId));
+    require(_approvedFor(this, _tokenId));
     require(_owns(_from, _tokenId));
 
     // Reassign ownership (also clears pending approvals and emits Transfer event).
