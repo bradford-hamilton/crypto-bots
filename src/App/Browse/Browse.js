@@ -96,11 +96,11 @@ class Browse extends Component {
                         block
                         >
                           Buy for {bot.price} Ether
-                        </Button>
-                      </div>
+                      </Button>
                     </div>
-                  </Col>
-                );
+                  </div>
+                </Col>
+              );
             })}
           </Row>
         </Grid>
