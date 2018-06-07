@@ -5,6 +5,7 @@ import {
   Col,
   PageHeader,
   Image,
+  Button,
 } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import getWeb3 from '../../utils/getWeb3';
@@ -62,6 +63,16 @@ class MyBots extends Component {
                 <div className="bot-card">
                   <Image src={`https://robohash.org/${id}`} rounded />
                   <p className="bot-id">Bot #{id}</p>
+                  <div className="add-bot-to-marketplace">
+                    <Button
+                      href={`/my-bots/${id}`}
+                      bsStyle="primary"
+                      bsSize="large"
+                      block
+                      >
+                      Add to marketplace
+                    </Button>
+                  </div>
                 </div>
               </Col>
             ))}
