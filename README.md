@@ -1,1 +1,16 @@
-#### This is CryptoBots (yes, same idea as kitties). Right now it's an experiment with the ERC721 space, solidity, and dapp development for non-fungibles.
+# CryptoBots
+
+Proof of concept digital asset marketplace. Experimenting with the ERC721
+space and dapp development for non-fungibles.
+
+## Contributing
+
+1. Fork it ( https://github.com/[your-github-name]/crypto-bots/fork )
+2. Create your feature branch (git checkout -b my-new-feature)
+3. Commit your changes (git commit -am 'Add some feature')
+4. Push to the branch (git push origin my-new-feature)
+5. Create a new Pull Request
+
+## Contributors
+
+- [Bradford-Hamilton](https://github.com/bradford-hamilton) Bradford Lamson-Scribner - creator, maintainer
