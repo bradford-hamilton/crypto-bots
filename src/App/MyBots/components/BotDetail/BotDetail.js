@@ -72,7 +72,7 @@ class BotDetail extends Component {
                   <div className="add-bot-to-marketplace">
                     <Button
                       onClick={() => {}}
-                      bsStyle="primary"
+                      bsStyle="info"
                       bsSize="large"
                       block
                       >

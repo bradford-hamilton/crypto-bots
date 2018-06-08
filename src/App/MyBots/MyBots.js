@@ -70,7 +70,7 @@ class MyBots extends Component {
                       bsSize="large"
                       block
                       >
-                      Add to marketplace
+                      View Details
                     </Button>
                   </div>
                 </div>
