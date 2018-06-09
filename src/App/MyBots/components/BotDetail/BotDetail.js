@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Grid,
-  Row,
-  Col,
-  PageHeader,
-  Image,
-  Button,
-} from 'react-bootstrap';
+import { Grid, Row, Col, PageHeader, Image, Button, Modal } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import getWeb3 from '../../../../utils/getWeb3';
 import NavBar from '../../../NavBar/NavBar';
@@ -19,8 +12,17 @@ class BotDetail extends Component {
     this.state = {
       web3: null,
       botId: null,
-      allowView: false
+      allowView: false,
+      alreadyForSale: false,
+      show: false,
+      salePrice: '0.00',
+      botCoreInstance: null,
+      ownerAddress: null,
     };
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.updateSalePrice = this.updateSalePrice.bind(this);
+    this.listOnMarketplace = this.listOnMarketplace.bind(this);
   }
 
   componentWillMount() {
@@ -28,11 +30,38 @@ class BotDetail extends Component {
       .then(results => {
         this.setState({
           web3: results.web3,
-          botId: this.props.match.params.id
+          botId: Number(this.props.match.params.id),
         });
         this.retreiveBot();
       })
       .catch(() => console.log('Error finding web3.'));
+  }
+
+  handleClose() {
+    this.setState({ show: false, salePrice: '0.00' });
+  }
+
+  handleOpen() {
+    this.setState({ show: true });
+  }
+
+  updateSalePrice(event) {
+    this.setState({ salePrice: event.target.value });
+  }
+
+  listOnMarketplace() {
+    this.state.botCoreInstance.addBotToMarketPlace(
+      this.state.botId,
+      this.state.web3.toWei(Number(this.state.salePrice), 'ether'),
+      this.state.ownerAddress,
+      {
+        from: this.state.ownerAddress,
+        to: this.state.botCoreInstance.address,
+        gas: 1500000,
+      }
+    );
+
+    this.handleClose();
   }
 
   async retreiveBot() {
@@ -43,9 +72,21 @@ class BotDetail extends Component {
 
     const accounts = await this.state.web3.eth.accounts;
     const botCoreInstance = await botCore.deployed();
-    let ownerAddress = await botCoreInstance.getOwnerByIndex(this.state.botId);
 
-    if (ownerAddress === accounts[0]) this.setState({ allowView: true });
+    let ownerAddress = await botCoreInstance.getOwnerByIndex(this.state.botId);
+    let botsOnMarketplace = await botCoreInstance.listBotIds();
+    const alreadyForSale = botsOnMarketplace
+      .map(id => id.toNumber())
+      .includes(this.state.botId);
+
+    if (ownerAddress === accounts[0]) {
+      this.setState({ allowView: true, alreadyForSale });
+    }
+
+    this.setState({
+      botCoreInstance,
+      ownerAddress: accounts[0],
+    });
   }
 
 
@@ -69,21 +110,51 @@ class BotDetail extends Component {
                 <div className="bot-card">
                   <Image src={`https://robohash.org/${this.state.botId}`} rounded />
                   <p className="bot-id">Bot #{this.state.botId}</p>
-                  <div className="add-bot-to-marketplace">
-                    <Button
-                      onClick={() => {}}
-                      bsStyle="info"
-                      bsSize="large"
-                      block
-                      >
-                      Add to marketplace
-                    </Button>
-                  </div>
+                  {!this.state.alreadyForSale ? (
+                    <div className="add-bot-to-marketplace">
+                      <Button
+                        onClick={this.handleOpen}
+                        bsStyle="info"
+                        bsSize="large"
+                        block
+                        >
+                        Add to marketplace
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <h3>Currently listed on marketplace</h3>
+                    </div>
+                  )}
                 </div>
               </Col>
             </Row>
           ) : <h1>You don't own this bot</h1>}
         </Grid>
+        <Modal show={this.state.show} onHide={this.handleClose}>
+          <Modal.Header>
+            <Modal.Title>List Your Bot on the Marketplace</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            How much are you asking? Please select amount in Ether &nbsp;
+            <input
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              value={this.state.salePrice}
+              onChange={this.updateSalePrice}
+            />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={this.handleClose}>Close</Button>
+            <Button
+              bsStyle="primary"
+              onClick={this.listOnMarketplace}
+            >
+              List on marketplace!
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
