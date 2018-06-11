@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PageHeader, Grid, Row, Col, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import getWeb3 from '../utils/getWeb3';
 import NavBar from './NavBar/NavBar';
@@ -28,10 +28,11 @@ class App extends Component {
         <NavBar />
         <Grid>
           <Row className="headerRow">
-            <Col xs={12} md={6} mdOffset={3}>
-              <PageHeader>
-                Welcome To Crypto Bots!
-              </PageHeader>
+            <Col xs={12}>
+              <h1>Welcome To Crypto Bots!</h1>
+              <h4>
+                Collect, buy, and sell digital bots on the Ethereum blockchain.
+              </h4>
             </Col>
           </Row>
           <Row className="getStartedRow">

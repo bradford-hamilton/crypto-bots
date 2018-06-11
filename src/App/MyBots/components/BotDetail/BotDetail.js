@@ -134,21 +134,27 @@ class BotDetail extends Component {
         </Grid>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header>
-            <Modal.Title>List Your Bot on the Marketplace</Modal.Title>
+            <Modal.Title className="modal-title">
+              List Your Bot on the Marketplace
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            How much are you asking? Please select amount in Ether &nbsp;
-            <input
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={this.state.salePrice}
-              onChange={this.updateSalePrice}
-            />
+            <h4>
+              Please select sale price in Ether
+              <input
+                className="modal-input"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={this.state.salePrice}
+                onChange={this.updateSalePrice}
+              />
+            </h4>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.handleClose}>Close</Button>
+            <Button bsSize="large" onClick={this.handleClose}>Close</Button>
             <Button
+              bsSize="large"
               bsStyle="primary"
               onClick={this.listOnMarketplace}
             >

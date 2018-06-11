@@ -5,8 +5,6 @@ body {
   font-family: 'Raleway', sans-serif;
 }
 
-.App {}
-
 .headerRow {
   text-align: center;
   padding-bottom: 30px;
@@ -14,4 +12,15 @@ body {
 
 .getStartedRow {
   text-align: center;
+}
+
+.App h1 {
+  font-size: 5.5rem;
+  padding-top: 30px;
+  padding-bottom: 15px;
+}
+
+.App h4 {
+  font-size: 2rem;
+  color: grey;
 }
