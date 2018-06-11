@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  PageHeader,
-  Grid,
-  Row,
-  Col,
-  Button,
-} from 'react-bootstrap';
+import { PageHeader, Grid, Row, Col, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import getWeb3 from '../utils/getWeb3';
 import NavBar from './NavBar/NavBar';
