@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader, Image, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import contract from 'truffle-contract';
+import Loader from 'react-loader';
 import getWeb3 from '../../utils/getWeb3';
 import NavBar from '../NavBar/NavBar';
 import BotCore from '../../../build/contracts/BotCore.json';
@@ -58,8 +59,6 @@ class Browse extends Component {
   }
 
   render() {
-    if (!this.state.web3) return <h1>Loading...</h1>;
-    console.log(this.state.accounts);
     return (
       <div className="browse">
         <NavBar />
@@ -71,31 +70,33 @@ class Browse extends Component {
               </PageHeader>
             </Col>
           </Row>
-          <Row className="bot-row">
-            {this.state.botsForSale.map(bot => {
-              if (this.state.accounts[0] === bot.owner) return null;
-              return (
-                <Col xs={12} md={4} key={bot.id} className="bot-card-wrapper">
-                  <div className="bot-card">
-                    <Image src={`https://robohash.org/${bot.id}`} rounded />
-                    <p className="bot-id">Bot #{bot.id}</p>
-                    <p className="price">Current Price: {bot.price} ether</p>
-                    <p className="address">Owner Address: {bot.owner}</p>
-                    <div className="buy-button">
-                      <Button
-                        onClick={() => this.buyBotHandler(bot.id, bot.owner, bot.price)}
-                        bsStyle="success"
-                        bsSize="large"
-                        block
-                        >
-                          Buy for {bot.price} Ether
-                      </Button>
+          <Loader loaded={!!this.state.web3}>
+            <Row className="bot-row">
+              {this.state.botsForSale.map(bot => {
+                if (this.state.accounts[0] === bot.owner) return null;
+                return (
+                  <Col xs={12} md={4} key={bot.id} className="bot-card-wrapper">
+                    <div className="bot-card">
+                      <Image src={`https://robohash.org/${bot.id}`} rounded />
+                      <p className="bot-id">Bot #{bot.id}</p>
+                      <p className="price">Current Price: {bot.price} ether</p>
+                      <p className="address">Owner Address: {bot.owner}</p>
+                      <div className="buy-button">
+                        <Button
+                          onClick={() => this.buyBotHandler(bot.id, bot.owner, bot.price)}
+                          bsStyle="success"
+                          bsSize="large"
+                          block
+                          >
+                            Buy for {bot.price} Ether
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                </Col>
-              );
-            })}
-          </Row>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Loader>
         </Grid>
       </div>
     );

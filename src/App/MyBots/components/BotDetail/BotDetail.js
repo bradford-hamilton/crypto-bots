@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader, Image, Button, Modal } from 'react-bootstrap';
 import { withRouter } from 'react-router';
+import Loader from 'react-loader';
 import getWeb3 from '../../../../utils/getWeb3';
 import NavBar from '../../../NavBar/NavBar';
 import BotCore from '../../../../../build/contracts/BotCore.json';
@@ -91,8 +92,6 @@ class BotDetail extends Component {
 
 
   render() {
-    if (!this.state.web3) return <h1>Loading...</h1>;
-
     return (
       <div className="browse">
         <NavBar />
@@ -104,32 +103,34 @@ class BotDetail extends Component {
               </PageHeader>
             </Col>
           </Row>
-          {this.state.allowView ? (
-            <Row className="bot-row">
-              <Col xs={12} md={6} mdOffset={3} className="bot-card-wrapper">
-                <div className="bot-card">
-                  <Image src={`https://robohash.org/${this.state.botId}`} rounded />
-                  <p className="bot-id">Bot #{this.state.botId}</p>
-                  {!this.state.alreadyForSale ? (
-                    <div className="add-bot-to-marketplace">
-                      <Button
-                        onClick={this.handleOpen}
-                        bsStyle="info"
-                        bsSize="large"
-                        block
-                        >
-                        Add to marketplace
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>
-                      <h3>Currently listed on marketplace</h3>
-                    </div>
-                  )}
-                </div>
-              </Col>
-            </Row>
-          ) : <h1>You don't own this bot</h1>}
+          <Loader loaded={!!this.state.web3}>
+            {this.state.allowView ? (
+              <Row className="bot-row">
+                <Col xs={12} md={6} mdOffset={3} className="bot-card-wrapper">
+                  <div className="bot-card">
+                    <Image src={`https://robohash.org/${this.state.botId}`} rounded />
+                    <p className="bot-id">Bot #{this.state.botId}</p>
+                    {!this.state.alreadyForSale ? (
+                      <div className="add-bot-to-marketplace">
+                        <Button
+                          onClick={this.handleOpen}
+                          bsStyle="info"
+                          bsSize="large"
+                          block
+                          >
+                          Add to marketplace
+                        </Button>
+                      </div>
+                    ) : (
+                      <div>
+                        <h3>Currently listed on marketplace</h3>
+                      </div>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            ) : <h1>You don't own this bot</h1>}
+          </Loader>
         </Grid>
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header>

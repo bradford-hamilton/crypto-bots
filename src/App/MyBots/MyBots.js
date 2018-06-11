@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader, Image, Button } from 'react-bootstrap';
 import { withRouter } from 'react-router';
+import Loader from 'react-loader';
 import getWeb3 from '../../utils/getWeb3';
 import NavBar from '../NavBar/NavBar';
 import BotCore from '../../../build/contracts/BotCore.json';
@@ -35,10 +36,7 @@ class MyBots extends Component {
     this.setState({ myBotIds });
   }
 
-
   render() {
-    if (!this.state.web3) return <h1>Loading...</h1>;
-
     return (
       <div className="browse">
         <NavBar />
@@ -50,26 +48,28 @@ class MyBots extends Component {
               </PageHeader>
             </Col>
           </Row>
-          <Row className="bot-row">
-            {this.state.myBotIds.map(id => (
-              <Col xs={12} md={4} key={id} className="bot-card-wrapper">
-                <div className="bot-card">
-                  <Image src={`https://robohash.org/${id}`} rounded />
-                  <p className="bot-id">Bot #{id}</p>
-                  <div className="add-bot-to-marketplace">
-                    <Button
-                      href={`/my-bots/${id}`}
-                      bsStyle="primary"
-                      bsSize="large"
-                      block
-                      >
-                      View Details
-                    </Button>
+          <Loader loaded={!!this.state.web3}>
+            <Row className="bot-row">
+              {this.state.myBotIds.map(id => (
+                <Col xs={12} md={4} key={id} className="bot-card-wrapper">
+                  <div className="bot-card">
+                    <Image src={`https://robohash.org/${id}`} rounded />
+                    <p className="bot-id">Bot #{id}</p>
+                    <div className="add-bot-to-marketplace">
+                      <Button
+                        href={`/my-bots/${id}`}
+                        bsStyle="primary"
+                        bsSize="large"
+                        block
+                        >
+                        View Details
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </Col>
-            ))}
-          </Row>
+                </Col>
+              ))}
+            </Row>
+          </Loader>
         </Grid>
       </div>
     );
