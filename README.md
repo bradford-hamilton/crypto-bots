@@ -1,6 +1,6 @@
 # CryptoBots
 
-Digital asset marketplace for robots. Proof of concept. Experimenting with the ERC721
+Digital asset marketplace proof of concept. Experimenting with the ERC721
 space and dapp development with non-fungibles.
 
 ## Contributing
