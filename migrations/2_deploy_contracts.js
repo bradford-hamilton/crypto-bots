@@ -5,7 +5,7 @@ const BotOwnership = artifacts.require("./BotOwnership.sol");
 const Marketplace = artifacts.require("./Marketplace.sol");
 const BotCore = artifacts.require("./BotCore.sol");
 
-module.exports = function(deployer) {
+module.exports = function (deployer) {
   deployer.deploy(Ownable);
   deployer.deploy(BotBase);
   deployer.deploy(BotOwnership);

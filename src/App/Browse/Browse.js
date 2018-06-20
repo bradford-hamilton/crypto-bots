@@ -15,7 +15,7 @@ class Browse extends Component {
       web3: null,
       botsForSale: [],
       botCoreInstance: null,
-      accounts: []
+      accounts: [],
     };
   }
 
